@@ -3,7 +3,7 @@
  * Plugin Name: WP Fragmention
  * Plugin URI: https://christiaanconover.com/code/wp-fragmention?ref=plugin-data
  * Description: Add support for Fragmention links to WordPress.
- * Version: 0.1.1
+ * Version: 0.1.2
  * Author: Christiaan Conover
  * Author URI: https://christiaanconover.com?ref=wp-fragmention-plugin-author-uri
  * License: GPLv2
@@ -49,7 +49,7 @@ class Fragmention {
 		// Use the WordPress hook to add the script inside <head>
 		wp_enqueue_script(
 			self::ID, // Handle for the script
-			plugins_url( 'cc-fragmention.js', __FILE__ ), // Path to the script file
+			plugins_url( 'fragmention.js', __FILE__ ), // Path to the script file
 			array(), // Script dependencies
 			self::VERSION // Script version
 		);
@@ -57,7 +57,7 @@ class Fragmention {
 		// Add stylesheet for Fragmention highlighting
 		wp_enqueue_style(
 			self::ID, // Handle for the stylesheet
-			plugins_url( 'cc-fragmention.css', __FILE__ ), // Path to the stylesheet file
+			plugins_url( 'fragmention.css', __FILE__ ), // Path to the stylesheet file
 			array(), // Stylesheet dependencies
 			self::VERSION // Stylesheet version
 		);
