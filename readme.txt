@@ -8,7 +8,7 @@ Stable tag: 0.1.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Add support for [Fragmention](https://medium.com/p/41ef2be9953f) links to WordPress.
+Add support for Fragmention links to WordPress.
 
 == Description ==
 
@@ -16,7 +16,7 @@ WP Fragmention is a plugin to add Jonathan Neal's [Fragmentions script](https://
 
 == Installation ==
 
-1. Upload the `fragmention` directory to your site's `plugins` directory
+1. Upload the `wp-fragmention` directory to your site's `plugins` directory
 2. Activate the plugin through the `Plugins` menu in WordPress
 
 == Frequently Asked Questions ==
