@@ -3,7 +3,7 @@
  * Plugin Name: WP Fragmention
  * Plugin URI: https://christiaanconover.com/code/wp-fragmention?ref=plugin-data
  * Description: Add support for Fragmention links to WordPress.
- * Version: 0.1.2
+ * Version: 0.1.3
  * Author: Christiaan Conover
  * Author URI: https://christiaanconover.com?ref=wp-fragmention-plugin-author-uri
  * License: GPLv2
@@ -20,7 +20,7 @@ class Fragmention {
 	// Plugin constants
 	const ID = 'cc-fragmention'; // Plugin ID
 	const NAME = 'Fragmention '; // Plugin name
-	const VERSION = '0.1.1'; // Plugin version
+	const VERSION = '0.1.3'; // Plugin version
 	const WPVER = '2.7'; // Minimum version of WordPress required for this plugin
 	const PREFIX = 'cc_fragmention_'; // Plugin database/method prefix
 	
@@ -29,6 +29,9 @@ class Fragmention {
 	
 	// Class constructor
 	function __construct() {
+		// Get plugin options from database
+		$this->options = get_option( self::PREFIX . 'options' );
+		
 		// Add the script
 		add_action( 'wp_enqueue_scripts', array( &$this, 'loadscript' ) );
 		
@@ -40,6 +43,7 @@ class Fragmention {
 			// Activation and deactivation hooks
 			register_activation_hook( __FILE__, array( &$this, 'activate' ) ); // Plugin activation
 			register_deactivation_hook( __FILE__, array( &$this, 'deactivate' ) ); // Plugin deactivation
+			/* End hooks and filters */
 		}
 	} // End __construct()
 	
@@ -49,7 +53,7 @@ class Fragmention {
 		// Use the WordPress hook to add the script inside <head>
 		wp_enqueue_script(
 			self::ID, // Handle for the script
-			plugins_url( 'fragmention.js', __FILE__ ), // Path to the script file
+			plugins_url( 'assets/js/fragmention.js', __FILE__ ), // Path to the script file
 			array(), // Script dependencies
 			self::VERSION // Script version
 		);
@@ -57,17 +61,24 @@ class Fragmention {
 		// Add stylesheet for Fragmention highlighting
 		wp_enqueue_style(
 			self::ID, // Handle for the stylesheet
-			plugins_url( 'fragmention.css', __FILE__ ), // Path to the stylesheet file
+			plugins_url( 'assets/css/fragmention.css', __FILE__ ), // Path to the stylesheet file
 			array(), // Stylesheet dependencies
 			self::VERSION // Stylesheet version
 		);
+		
+		// If tooltip-on-highlight is enabled, add the script for it
+		if ( ! empty( $this->options['tooltip'] ) ) {
+			wp_enqueue_script(
+				self::ID . '-highlight', // Handle for the script
+				plugins_url( 'assets/js/highlighter.js', __FILE__ ), // Path to the script file
+				array( 'jquery' ), // Script dependencies
+				self::VERSION // Script version
+			);
+		}
 	} // End loadscript()
 	
 	/* ===== Admin Initialization ===== */
 	function admin_initialize() {
-		// Get plugin options from database
-		$this->options = get_option( self::PREFIX . 'options' );
-		
 		// Run upgrade process
 		$this->upgrade();
 	} // End admin_initialize()
@@ -79,7 +90,12 @@ class Fragmention {
 			// Set local variable for options (always the first step in the upgrade process)
 			$options = $this->options;
 			
-			/* Update the plugin version saved in the database (always the last step of the upgrade process) */
+			// If the 'tooltip' option isn't present, add it and set it to active
+			if ( empty( $options['tooltip'] ) ) {
+				$options['tooltip'] = 'yes';
+			}
+			
+			/* Update the plugin options saved in the database (always the last step of the upgrade process) */
 			// Set the value of the plugin version
 			$options['dbversion'] = self::VERSION;
 			
@@ -104,6 +120,7 @@ class Fragmention {
 	 	
 	 	// Default plugin options
 	 	$options = array(
+	 		'tooltip' => 'yes', // Display tooltip containing fragmention link when text is highlighted
 	 		'dbversion' => self::VERSION, // Current plugin version
 	 	);
 	 	
