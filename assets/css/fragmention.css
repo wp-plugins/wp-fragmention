@@ -1,0 +1,6 @@
+/* Fragmention highlighting */
+body :target,
+body [fragmention] {
+	background-color: rgb(255,255,0);
+	background-color: rgbrgba(255,255,0,0.5);
+}
