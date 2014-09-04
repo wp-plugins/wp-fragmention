@@ -3,7 +3,7 @@ Contributors: cconover
 Donate link: https://christiaanconover.com/code/wp-fragmention
 Tags: fragmention, link, javascript
 Requires at least: 2.7
-Tested up to: 3.9
+Tested up to: 4.0
 Stable tag: 0.1.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
